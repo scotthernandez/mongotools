@@ -2,7 +2,8 @@ import pymongo
 import argparse
 import os.path
 import resource
-import fincore
+#import fincore
+import ftools
 import glob
 from collections import defaultdict
 
@@ -11,18 +12,18 @@ def main():
         description="Gives information about collection memory usage in Mongo")
     parser.add_argument('--connection', '-c', default='localhost',
                         help='pymongo connection string to mongos')
-    parser.add_argument('--dbpath', '-p', default='/var/lib/mongodb',
-                        help='path to data dir')
-    parser.add_argument('--directoryperdb', action='store_true',
-                        help='path to data dir')
     parser.add_argument('--num', '-n', default=10, help='number of collections')
     args = parser.parse_args()
 
     conn = pymongo.Connection(args.connection)
-    dbpath = args.dbpath
+    cmdLineOpts = conn.admin.command("getCmdLineOpts")
+    dbpath = cmdLineOpts["parsed"]["dbpath"]
 
-    DB_FILE_PTRN = '{0}/{1}/{1}.[0-9]*' if args.directoryperdb else \
-                   '{0}/{1}.[0-9]*'
+
+
+    DB_FILE_PTRN = '{0}/{1}/{1}.[0-9]*' if \
+                    "directoryperdb" in cmdLineOpts["parsed"] \
+                    else '{0}/{1}.[0-9]*'
 
     ns_resident_ratios = {}
     ns_resident_pages = {}

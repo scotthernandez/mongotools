@@ -2,7 +2,7 @@
 
 #include <unistd.h>
 #include <sys/mman.h>
-#include <linux/fadvise.h>
+//#include <linux/fadvise.h>
 #include <sys/syscall.h>
 
 static PyObject *ftools_fincore(PyObject *self, PyObject *args) {
@@ -111,6 +111,7 @@ static PyObject *ftools_fincore_ratio(PyObject *self, PyObject *args) {
 }
 
 // ftools.fadvise
+/*
 static PyObject *ftools_fadvise(PyObject *self, PyObject *args, PyObject *keywds) {
     int fd;
     int offset = 0;
@@ -173,13 +174,13 @@ static PyObject *ftools_fadvise(PyObject *self, PyObject *args, PyObject *keywds
 
     Py_INCREF(Py_None);
     return Py_None;
-}
+}*/
 
 static PyMethodDef FtoolsMethods[] = {
     {"fincore", ftools_fincore, METH_VARARGS, "Return the mincore structure for the given file."},
-    {"fincore_ratio", ftools_fincore_ratio, METH_VARARGS, "Return a int two tuple indicating file in page cache ratio."},
+    {"fincore_ratio", ftools_fincore_ratio, METH_VARARGS, "Return a int two tuple indicating file in page cache ratio."}/* ,
     {"fadvise", (PyCFunction) ftools_fadvise, METH_KEYWORDS, "fadvise system call for Python!"},
-    {NULL, NULL, 0, NULL}
+    {NULL, NULL, 0, NULL}*/
 };
 
 PyMODINIT_FUNC initftools(void) {
